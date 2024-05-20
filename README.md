@@ -9,6 +9,24 @@ required as I have overriden the implementation here anyways.
 This is my harpoon config:
 
 ```lua
+local find_project_root = function()
+    local current_dir = vim.loop.cwd()
+    local marker_files = { ".git", "package.json", ".sln" }
+
+    -- Check each parent directory for the existence of a marker file or directory
+    while current_dir ~= "/" do
+        for _, marker in ipairs(marker_files) do
+            local marker_path = current_dir .. "/" .. marker
+            if vim.fn.isdirectory(marker_path) == 1 or vim.fn.filereadable(marker_path) == 1 then
+                return current_dir
+            end
+        end
+        current_dir = vim.fn.resolve(current_dir .. "/..")
+    end
+    -- If no marker file or directory is found, return the original directory
+    return vim.loop.cwd()
+end
+
 return {
     -- "ThePrimeagen/harpoon",
     -- branch = "harpoon2",
@@ -32,21 +50,7 @@ return {
                 sync_on_ui_close = true,
                 key = function()
                     -- return vim.uv.cwd() -- This is the default
-                    local current_dir = vim.loop.cwd()
-                    local marker_files = { ".git", "package.json", ".sln" }
-
-                    -- Check each parent directory for the existence of a marker file or directory
-                    while current_dir ~= "/" do
-                        for _, marker in ipairs(marker_files) do
-                            local marker_path = current_dir .. "/" .. marker
-                            if vim.fn.isdirectory(marker_path) == 1 or vim.fn.filereadable(marker_path) == 1 then
-                                return current_dir
-                            end
-                        end
-                        current_dir = vim.fn.resolve(current_dir .. "/..")
-                    end
-                    -- If no marker file or directory is found, return the original directory
-                    return vim.loop.cwd()
+                    return find_project_root()
                 end,
             },
             default = {
@@ -57,19 +61,10 @@ return {
 
         relative_marks.setup({
             key = function()
-                return utils.find_project_root()
+                return find_project_root()
             end,
         })
 
-        vim.api.nvim_create_autocmd({ "QuitPre" }, {
-            pattern = "*",
-            callback = function()
-                -- Do this for all the lists you have
-                Harpoon:list():sync_cursor()
-            end,
-        })
-
-        -- Harpoon
         vim.keymap.set("n", "<leader>m", function()
             Harpoon:list():add()
         end)
