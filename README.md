@@ -1,7 +1,7 @@
 # Harpoon Relative Marks
 
-This extension is an extremely hacky way to display marks relative to your
-current file.
+This extension for [ThePrimeagen/harpoon](https://github.com/ThePrimeagen/harpoon)
+is an extremely hacky way to display marks relative to your current file.
 
 I currently use it with my fork of harpoon, although I don't think that is
 required as I have overriden the implementation here anyways.
