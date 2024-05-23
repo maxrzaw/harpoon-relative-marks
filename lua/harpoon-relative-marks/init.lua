@@ -24,7 +24,7 @@ function M.create_list_item(config, item)
     if item == nil then
         item = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
     elseif type(item) == "string" then
-        if item:sub(1, 1) == "/" then
+        if item:sub(1, 1) == "/" or item:sub(1, 3) == "C:\\" then
             item = tostring(Path(item):resolve())
         else
             item = tostring(Path(M._current_dir / item):resolve())
