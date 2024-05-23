@@ -7,6 +7,9 @@ local M = {}
 M._current_dir = Path(vim.uv.cwd())
 
 local function normalize_path(current_dir, root_dir, path)
+    if path == nil or path == "" then
+        return path
+    end
     local p = Path(path)
     local c = Path(current_dir)
     local r = Path(root_dir)
