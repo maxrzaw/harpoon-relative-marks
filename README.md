@@ -82,6 +82,5 @@ return {
 
 ## TODO
 
-When current file is not a child of project root, show marks relative to project
-root.
-There was a wierd bug when I went to a mark outside of the cwd as well.
+-   There was a wierd bug when I went to a mark outside of the cwd as well.
+-   Need to properly expand ~/
