@@ -13,8 +13,10 @@ local function normalize_path(current_dir, root_dir, path)
     local p = Path(path)
     local c = Path(current_dir)
     local r = Path(root_dir)
+
+    local root_idx = tostring(current_dir):find(tostring(root_dir), 1, true)
     local idx = tostring(p):find(tostring(r), 1, true)
-    if idx == 1 then
+    if root_idx == 1 and idx == 1 then
         return p:relative_to(c, true):tostring()
     end
     return p:tostring()
